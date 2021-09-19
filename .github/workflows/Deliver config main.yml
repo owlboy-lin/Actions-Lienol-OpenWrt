@@ -8,7 +8,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 # 
 
-name: Deliver config main
+name: Deliver Lienol config main
 
 on:
   repository_dispatch:
@@ -23,12 +23,7 @@ on:
 #  push:
 #    branches: 
 #      - master
-#    paths:
-#      - '.github/workflows/test.yml'
 
-
-#  watch:
-#    types: [started]
 
       
 env:
@@ -48,7 +43,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    name: Deliver config main
+    name: Deliver Lienol config main
     
     if: github.event.repository.owner.id == github.event.sender.id
     
@@ -138,7 +133,7 @@ jobs:
         - name: Deliver config
           uses: actions/upload-artifact@v2
           with:
-            name: OpenWrt_configinfo
+            name: OpenWrt_Lienol_main$date
             path: openwrt/artifact/buildinfo/
             
 
