@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Lienol OpenWrt hellword
+name: Lienol OpenWrt passwall-hellword
 
 on:
   repository_dispatch:
@@ -31,7 +31,7 @@ env:
   REPO_URL: https://github.com/Lienol/openwrt.git
   REPO_BRANCH: main
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: Lienol-main-hellword.info
+  CONFIG_FILE: Lienol-main-passwall-hellword.info
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
@@ -45,7 +45,7 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     
-    name: Lienol OpenWrt hellword
+    name: Lienol OpenWrt passwall-hellword
 
     steps:
     - name: Checkout
@@ -134,7 +134,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: Lienol_hellword_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol_passwall-hellword_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -150,7 +150,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: Lienol_hellword_firmware_${{REPO_BRANCH}}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol_passwall-hellword_firmware_${{REPO_BRANCH}}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Upload firmware to cowtransfer
