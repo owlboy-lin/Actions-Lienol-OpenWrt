@@ -133,7 +133,7 @@ jobs:
         - name: Deliver config
           uses: actions/upload-artifact@v2
           with:
-            name: OpenWrt_Lienol_main_$(date +"%Y%m%d%H%M")
+            name: OpenWrt_Lienol_main
             path: openwrt/artifact/buildinfo/
             
 
