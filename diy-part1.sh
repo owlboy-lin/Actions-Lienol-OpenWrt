@@ -14,10 +14,33 @@
 #sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
 # Add a feed source
-#sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
-# 注释掉lienol大diy1源
-#sed -i 's/^\(.*diy1\)/#&/' feeds.conf.default
+# Modify default IP
+#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-# 添加修改后的diy1源
-#sed -i '$a src-git diy1 https://github.com/lxhao61/openwrt-package.git;master' feeds.conf.default
+# Import external feeds
+# git clone https://github.com/Lienol/openwrt-package.git package/lienol
+
+# git clone https://github.com/openwrt-develop/luci-theme-atmaterial package/luci-theme-atmaterial
+
+# git clone https://github.com/rosywrt/luci-theme-rosy package/luci-theme-rosy
+
+# luci-theme-argon
+# cd openwrt/package/lean  
+# rm -rf luci-theme-argon  
+# git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git  
+
+# git clone https://github.com/rufengsuixing/luci-app-adguardhome package/adguardhome
+
+# git clone https://github.com/vernesong/OpenClash package/openclash
+
+# git clone https://github.com/frainzy1477/luci-app-clash package/clash
+
+# git clone https://github.com/fw876/helloworld package/ssrplus
+
+# git clone https://github.com/tzxiaozhen88/luci-app-koolproxyR package/koolproxyR
+
+# git clone 其他github插件源码地址 package/文件夹名称
+
