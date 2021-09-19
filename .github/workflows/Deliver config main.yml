@@ -20,9 +20,9 @@ on:
         default: 'true'
 
         
-#  push:
-#    branches: 
-#      - master
+  push:
+    branches: 
+      - master
 
 
       
@@ -133,7 +133,7 @@ jobs:
         - name: Deliver config
           uses: actions/upload-artifact@v2
           with:
-            name: OpenWrt_Lienol_main
+            name: OpenWrt_Lienol_main_$(date +"%Y%m%d%H%M")
             path: openwrt/artifact/buildinfo/
             
 
