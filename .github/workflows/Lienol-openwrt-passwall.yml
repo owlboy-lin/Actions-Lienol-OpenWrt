@@ -124,7 +124,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: Lienol_passwall_$REPO_BRANCH_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol_passwall_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -140,7 +140,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: Lienol_passwall_firmware_$REPO_BRANCH_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol_passwall_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Upload firmware to cowtransfer
