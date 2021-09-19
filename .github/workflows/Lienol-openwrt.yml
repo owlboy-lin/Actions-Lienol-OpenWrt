@@ -38,6 +38,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    
+    name: Lienol OpenWrt
 
     steps:
     - name: Checkout
