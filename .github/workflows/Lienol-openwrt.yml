@@ -21,6 +21,12 @@ on:
 #  schedule:
 #    - cron: 0 8 * * 5
 
+  push:
+    branches: 
+      - master
+
+
+
 env:
   REPO_URL: https://github.com/Lienol/openwrt.git
   REPO_BRANCH: main
