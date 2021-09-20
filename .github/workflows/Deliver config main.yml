@@ -124,7 +124,7 @@ jobs:
         - name: Deliver config
           uses: actions/upload-artifact@v2
           with:
-            name: OpenWrt_Lienol_main_${{ env.FILE_DATE }}
+            name: OpenWrt_Lienol_main_buildinfo_${{ env.FILE_DATE }}
             path: openwrt/artifact/buildinfo/
             
 
