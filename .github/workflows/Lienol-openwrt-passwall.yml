@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Lienol OpenWrt passwall
+name: Lienol-passwall
 
 on:
   repository_dispatch:
@@ -38,14 +38,14 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: true
   UPLOAD_WETRANSFER: true
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
   build:
     runs-on: ubuntu-18.04
     
-    name: Lienol OpenWrt passwall
+    name: Lienol-passwall
 
     steps:
     - name: Checkout
@@ -70,7 +70,7 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-
+        cd openwrt/package
 
     - name: Load custom feeds
       run: |
@@ -102,12 +102,16 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
         
+        
+
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+
 
     - name: Compile the firmware
       id: compile
@@ -124,11 +128,24 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
+    - name: Prepare artifact
+      if: steps.compile.outputs.status == 'success' && !cancelled()
+      run: |
+        cd openwrt 
+        mkdir -p ./artifact/firmware
+        mkdir -p ./artifact/package
+        mkdir -p ./artifact/buildinfo
+        rm -rf $(find ./bin/targets/ -type d -name "packages")
+        cp -rf .config ./artifact/buildinfo/config.info
+        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
+        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
+        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+  
     - name: Upload bin directory
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: Lienol_passwall_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-hellword_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -142,10 +159,24 @@ jobs:
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
+      if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
       with:
-        name: Lienol_passwall_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-passwall_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
+
+    - name: Deliver buildinfo
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
+      with:
+        name: Lienol-passwall_${{ env.REPO_BRANCH }}_buildinfo${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/artifact/buildinfo/
+
+    - name: Deliver package
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
+      with:
+        name: Lienol-passwall_${{ env.REPO_BRANCH }}_package${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/artifact/package/
 
     - name: Upload firmware to cowtransfer
       id: cowtransfer
