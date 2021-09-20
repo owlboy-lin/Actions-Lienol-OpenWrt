@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Lienol OpenWrt passwall-hellword
+name: Lienol-passwall-hellword
 
 on:
   repository_dispatch:
@@ -38,14 +38,14 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: true
   UPLOAD_WETRANSFER: true
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
   build:
     runs-on: ubuntu-18.04
     
-    name: Lienol OpenWrt passwall-hellword
+    name: Lienol-passwall-hellword
 
     steps:
     - name: Checkout
@@ -128,11 +128,24 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
+    - name: Prepare artifact
+      if: steps.compile.outputs.status == 'success' && !cancelled()
+      run: |
+        cd openwrt 
+        mkdir -p ./artifact/firmware
+        mkdir -p ./artifact/package
+        mkdir -p ./artifact/buildinfo
+        rm -rf $(find ./bin/targets/ -type d -name "packages")
+        cp -rf .config ./artifact/buildinfo/config.info
+        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
+        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
+        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+  
     - name: Upload bin directory
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: Lienol_passwall-hellword_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-passwall-hellword_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -148,8 +161,22 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
       with:
-        name: Lienol_passwall-hellword_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-passwall-hellword_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
+
+    - name: Deliver buildinfo
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
+      with:
+        name: Lienol-passwall-hellword_${{ env.REPO_BRANCH }}_buildinfo${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/artifact/buildinfo/
+
+    - name: Deliver package
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
+      with:
+        name: Lienol-passwall-hellword_${{ env.REPO_BRANCH }}_package${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/artifact/package/
 
     - name: Upload firmware to cowtransfer
       id: cowtransfer
