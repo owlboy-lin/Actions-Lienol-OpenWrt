@@ -150,7 +150,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: Lienol_hellword_firmware_${{REPO_BRANCH}}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol_hellword_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Upload firmware to cowtransfer
