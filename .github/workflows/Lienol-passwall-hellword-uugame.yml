@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Lienol-passwall-hellword
+name: Lienol-passwall-hellword-uugame
 
 on:
   repository_dispatch:
@@ -45,7 +45,7 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     
-    name: Lienol-passwall-hellword
+    name: Lienol-passwall-hellword-uugame
 
     steps:
     - name: Checkout
@@ -145,7 +145,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: Lienol-passwall-hellword_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-passwall-hellword-uugame_${{ env.REPO_BRANCH }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -161,21 +161,21 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
       with:
-        name: Lienol-passwall-hellword_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-passwall-hellword-uugame_firmware_${{ env.REPO_BRANCH }}_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Deliver buildinfo
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
       with:
-        name: Lienol-passwall-hellword_${{ env.REPO_BRANCH }}_buildinfo${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: LLienol-passwall-hellword-uugame_${{ env.REPO_BRANCH }}_buildinfo${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/artifact/buildinfo/
 
     - name: Deliver package
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && steps.organize.outputs.status == 'success'
       with:
-        name: Lienol-passwall-hellword_${{ env.REPO_BRANCH }}_package${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: Lienol-passwall-hellword-uugame_${{ env.REPO_BRANCH }}_package${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/artifact/package/
 
     - name: Upload firmware to cowtransfer
