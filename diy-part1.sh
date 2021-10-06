@@ -27,7 +27,7 @@ echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.co
 echo 'src-git UUGameAcc https://github.com/BCYDTZ/luci-app-UUGameAcc' >>feeds.conf.default
 
 
-git clone https://github.com/kenzok8/openwrt-packages.git kenzok8/openwrt-packages
+git clone https://github.com/kenzok8/openwrt-packages.git packages/openwrt-packages
 
 git clone https://github.com/kenzok8/small.git package/small
 
