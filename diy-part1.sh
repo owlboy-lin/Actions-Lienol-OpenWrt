@@ -11,9 +11,16 @@
 #
 
 # Uncomment a feed source
-#sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
+sed -i 'd/^#//' feeds.conf.default
+sed -i 'd/^s//' feeds.conf.default
 
 # Add a feed source
+echo 'src-git packages https://github.com/Lienol/openwrt-packages.git;21.02' >>feeds.conf.default
+echo 'src-git luci https://github.com/Lienol/openwrt-luci.git;21.02' >>feeds.conf.default
+echo 'src-git routing https://git.openwrt.org/feed/routing.git' >>feeds.conf.default
+echo 'src-git telephony https://git.openwrt.org/feed/telephony.git' >>feeds.conf.default
+echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
+
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
