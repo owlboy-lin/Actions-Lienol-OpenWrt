@@ -11,8 +11,8 @@
 #
 
 # Uncomment a feed source
-sed -i 'd/^#//' feeds.conf.default
-sed -i 'd/^s//' feeds.conf.default
+sed -i 'd' feeds.conf.default
+
 
 # Add a feed source
 echo 'src-git packages https://github.com/Lienol/openwrt-packages.git;main' >>feeds.conf.default
